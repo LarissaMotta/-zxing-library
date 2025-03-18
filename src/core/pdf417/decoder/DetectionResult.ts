@@ -195,10 +195,6 @@ export default /*final*/ class DetectionResult {
   }
 
   private adjustRowNumbers(barcodeColumn: int, codewordsRow: int, codewords: Codeword[]): void {
-    if (this.detectionResultColumns[barcodeColumn - 1] == null) {
-      return;
-    }
-
     let codeword: Codeword = codewords[codewordsRow];
     let previousColumnCodewords: Codeword[] = this.detectionResultColumns[barcodeColumn - 1].getCodewords();
     let nextColumnCodewords: Codeword[] = previousColumnCodewords;

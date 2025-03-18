@@ -12,7 +12,7 @@ export default abstract class AI01decoder extends AbstractExpandedDecoder {
 
   encodeCompressedGtin(buf: StringBuilder, currentPos: number): void {
     buf.append('(01)');
-    const initialPosition = buf.length();
+    let initialPosition = buf.length();
     buf.append('9');
 
     this.encodeCompressedGtinWithoutAI(buf, currentPos, initialPosition);
@@ -20,15 +20,14 @@ export default abstract class AI01decoder extends AbstractExpandedDecoder {
 
   encodeCompressedGtinWithoutAI(buf: StringBuilder, currentPos: number, initialBufferPosition: number): void {
     for (let i = 0; i < 4; ++i) {
-      const currentBlock /* int */ = this.getGeneralDecoder().extractNumericValueFromBitArray(currentPos + 10 * i, 10);
-      // Pad with leading zeroes.
-      if (currentBlock < 100) {
+      let currentBlock = this.getGeneralDecoder().extractNumericValueFromBitArray(currentPos + 10 * i, 10);
+      if (currentBlock / 100 === 0) {
         buf.append('0');
       }
-      if (currentBlock < 10) {
+      if (currentBlock / 10 === 0) {
         buf.append('0');
       }
-      buf.append('' + currentBlock);
+      buf.append(currentBlock);
     }
 
     AI01decoder.appendCheckDigit(buf, initialBufferPosition);
@@ -37,7 +36,9 @@ export default abstract class AI01decoder extends AbstractExpandedDecoder {
   private static appendCheckDigit(buf: StringBuilder, currentPos: number): void {
     let checkDigit = 0;
     for (let i = 0; i < 13; i++) {
-      const digit = buf.charAt(i + currentPos).charCodeAt(0) - '0'.charCodeAt(0);
+      // let digit = buf.charAt(i + currentPos) - '0';
+      // To be checked
+      let digit = buf.charAt(i + currentPos).charCodeAt(0) - '0'.charCodeAt(0);
       checkDigit += (i & 0x01) === 0 ? 3 * digit : digit;
     }
 
@@ -46,7 +47,7 @@ export default abstract class AI01decoder extends AbstractExpandedDecoder {
       checkDigit = 0;
     }
 
-    buf.append('' + checkDigit);
+    buf.append(checkDigit);
   }
 
 }

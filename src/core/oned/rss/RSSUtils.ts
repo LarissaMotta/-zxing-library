@@ -36,9 +36,9 @@ export default class RSSUtils {
     return val;
   }
 
-  private static combins(n: number /* int */, r: number /* int */): number /* int */ {
-    let maxDenom /* int */ = 0;
-    let minDenom /* int */ = 0;
+  private static combins(n: number, r: number): number {
+    let maxDenom;
+    let minDenom;
     if (n - r > r) {
       minDenom = r;
       maxDenom = n - r;
@@ -46,17 +46,17 @@ export default class RSSUtils {
       minDenom = n - r;
       maxDenom = r;
     }
-    let val /* int */ = 1;
-    let j /* int */ = 1;
-    for (let i = n; i > maxDenom; i--) {
+    let val = 1;
+    let j = 1;
+    for (let i: number = n; i > maxDenom; i--) {
       val *= i;
       if (j <= minDenom) {
-        val = Math.trunc(val / j);
+        val /= j;
         j++;
       }
     }
     while ((j <= minDenom)) {
-      val = Math.trunc(val / j);
+      val /= j;
       j++;
     }
     return val;

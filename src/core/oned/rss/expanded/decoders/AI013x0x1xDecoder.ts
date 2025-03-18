@@ -18,40 +18,22 @@ export default class AI013x0x1xDecoder extends AI01weightDecoder {
   }
 
   public parseInformation(): string {
-    if (
-      this.getInformation().getSize() !==
-      AI013x0x1xDecoder.HEADER_SIZE +
-        AI013x0x1xDecoder.GTIN_SIZE +
-        AI013x0x1xDecoder.WEIGHT_SIZE +
-        AI013x0x1xDecoder.DATE_SIZE
-    ) {
+    if (this.getInformation().getSize() != AI013x0x1xDecoder.HEADER_SIZE + AI013x0x1xDecoder.GTIN_SIZE + AI013x0x1xDecoder.WEIGHT_SIZE + AI013x0x1xDecoder.DATE_SIZE) {
       throw new NotFoundException();
     }
 
-    const buf = new StringBuilder();
+    let buf = new StringBuilder();
 
     this.encodeCompressedGtin(buf, AI013x0x1xDecoder.HEADER_SIZE);
-    this.encodeCompressedWeight(
-      buf,
-      AI013x0x1xDecoder.HEADER_SIZE + AI013x0x1xDecoder.GTIN_SIZE,
-      AI013x0x1xDecoder.WEIGHT_SIZE
-    );
-    this.encodeCompressedDate(
-      buf,
-      AI013x0x1xDecoder.HEADER_SIZE +
-        AI013x0x1xDecoder.GTIN_SIZE +
-        AI013x0x1xDecoder.WEIGHT_SIZE
-    );
+    this.encodeCompressedWeight(buf, AI013x0x1xDecoder.HEADER_SIZE + AI013x0x1xDecoder.GTIN_SIZE, AI013x0x1xDecoder.WEIGHT_SIZE);
+    this.encodeCompressedDate(buf, AI013x0x1xDecoder.HEADER_SIZE + AI013x0x1xDecoder.GTIN_SIZE + AI013x0x1xDecoder.WEIGHT_SIZE);
 
     return buf.toString();
   }
 
   private encodeCompressedDate(buf: StringBuilder, currentPos: number): void {
-    let numericDate = this.getGeneralDecoder().extractNumericValueFromBitArray(
-      currentPos,
-      AI013x0x1xDecoder.DATE_SIZE
-    );
-    if (numericDate === 38400) {
+    let numericDate = this.getGeneralDecoder().extractNumericValueFromBitArray(currentPos, AI013x0x1xDecoder.DATE_SIZE);
+    if (numericDate == 38400) {
       return;
     }
 
@@ -59,34 +41,33 @@ export default class AI013x0x1xDecoder extends AI01weightDecoder {
     buf.append(this.dateCode);
     buf.append(')');
 
-    const day /* int */ = numericDate % 32;
-    numericDate = Math.trunc(numericDate / 32);
-    const month /* int */ = (numericDate % 12) + 1;
-    numericDate = Math.trunc(numericDate / 12);
-    const year /* int */ = numericDate;
+    let day = numericDate % 32;
+    numericDate /= 32;
+    let month = numericDate % 12 + 1;
+    numericDate /= 12;
+    let year = numericDate;
 
-    // Division of an integer by 10 results in 0.
-    // The checks exist to add a leading 0.
-    if (year < 10) {
+    if (year / 10 == 0) {
       buf.append('0');
     }
-    buf.append('' + year);
-    if (month < 10) {
+    buf.append(year);
+    if (month / 10 == 0) {
       buf.append('0');
     }
-    buf.append('' + month);
-    if (day < 10) {
+    buf.append(month);
+    if (day / 10 == 0) {
       buf.append('0');
     }
-    buf.append('' + day);
+    buf.append(day);
   }
 
-  protected addWeightCode(buf: StringBuilder, weight: number /* int */): void {
+  protected addWeightCode(buf: StringBuilder, weight: number): void {
     buf.append('(');
     buf.append(this.firstAIdigits);
-    buf.append('' + Math.trunc(weight / 100000));
+    buf.append(weight / 100000);
     buf.append(')');
   }
+
 
   protected checkWeight(weight: number): number {
     return weight % 100000;

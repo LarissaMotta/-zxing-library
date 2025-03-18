@@ -1,17 +1,16 @@
-import IllegalStateException from '../../../../IllegalStateException';
-import BitArray from '../../../../common/BitArray';
-import GeneralAppIdDecoder from './GeneralAppIdDecoder';
-import AI01AndOtherAIs from './AI01AndOtherAIs';
-import AnyAIDecoder from './AnyAIDecoder';
+import { BitArray, IllegalStateException } from '../../../../..';
+import AbstractExpandedDecoder from './AbstractExpandedDecoder';
 import AI013103decoder from './AI013103decoder';
 import AI01320xDecoder from './AI01320xDecoder';
 import AI01392xDecoder from './AI01392xDecoder';
 import AI01393xDecoder from './AI01393xDecoder';
 import AI013x0x1xDecoder from './AI013x0x1xDecoder';
-import AbstractExpandedDecoder from './AbstractExpandedDecoder';
+import AI01AndOtherAIs from './AI01AndOtherAIs';
+import AnyAIDecoder from './AnyAIDecoder';
+import GeneralAppIdDecoder from './GeneralAppIdDecoder';
 
 
-export function createDecoder(information: BitArray): AbstractExpandedDecoder {
+export default function createDecoder(information: BitArray): AbstractExpandedDecoder {
   try {
     if (information.get(1)) {
       return new AI01AndOtherAIs(information);
@@ -49,6 +48,4 @@ export function createDecoder(information: BitArray): AbstractExpandedDecoder {
     console.log(e);
     throw new IllegalStateException('unknown decoder: ' + information);
   }
-
-
 }

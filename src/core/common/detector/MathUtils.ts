@@ -20,7 +20,8 @@
  * General math-related and numeric utility functions.
  */
 export default class MathUtils {
-  private constructor() {}
+
+  private constructor() { }
 
   /**
    * Ends up being a bit faster than {@link Math#round(float)}. This merely rounds its
@@ -32,10 +33,10 @@ export default class MathUtils {
    * @return nearest {@code int}
    */
   public static round(d: number/*float*/): number /*int*/ {
-    if (isNaN(d)) return 0;
+    if (NaN === d) return 0;
     if (d <= Number.MIN_SAFE_INTEGER) return Number.MIN_SAFE_INTEGER;
     if (d >= Number.MAX_SAFE_INTEGER) return Number.MAX_SAFE_INTEGER;
-    return /*(int) */ (d + (d < 0.0 ? -0.5 : 0.5)) | 0;
+    return /*(int) */(d + (d < 0.0 ? -0.5 : 0.5)) | 0;
   }
   // TYPESCRIPTPORT: maybe remove round method and call directly Math.round, it looks like it doesn't make sense for js
 
@@ -46,15 +47,10 @@ export default class MathUtils {
    * @param bY point B y coordinate
    * @return Euclidean distance between points A and B
    */
-  public static distance(
-    aX: number /*float|int*/,
-    aY: number /*float|int*/,
-    bX: number /*float|int*/,
-    bY: number /*float|int*/
-  ): number /*float*/ {
+  public static distance(aX: number/*float|int*/, aY: number/*float|int*/, bX: number/*float|int*/, bY: number/*float|int*/): number/*float*/ {
     const xDiff = aX - bX;
     const yDiff = aY - bY;
-    return /*(float) */ Math.sqrt(xDiff * xDiff + yDiff * yDiff);
+    return /*(float) */Math.sqrt(xDiff * xDiff + yDiff * yDiff);
   }
 
   /**
@@ -82,4 +78,5 @@ export default class MathUtils {
     }
     return count;
   }
+
 }

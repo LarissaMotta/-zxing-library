@@ -2,15 +2,19 @@ import DecodedInformation from './DecodedInformation';
 
 export default class BlockParsedResult {
 
-  private readonly decodedInformation: DecodedInformation | null;
+  private readonly decodedInformation: DecodedInformation;
   private readonly finished: boolean;
 
-  constructor(decodedInformation?: DecodedInformation | null, finished?: boolean) {
-    this.decodedInformation = decodedInformation ? decodedInformation : null;
-    this.finished = !!finished;
+  constructor(finished: boolean, decodedInformation?: DecodedInformation) {
+    if (decodedInformation) {
+      this.decodedInformation = null;
+    } else {
+      this.finished = finished;
+      this.decodedInformation = decodedInformation;
+    }
   }
 
-  getDecodedInformation(): DecodedInformation | null {
+  getDecodedInformation(): DecodedInformation {
     return this.decodedInformation;
   }
 
