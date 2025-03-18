@@ -22,21 +22,21 @@ export class BrowserCodeReader {
   /**
    * If navigator is present.
    */
-  public get hasNavigator() {
+  hasNavigator() {
     return typeof navigator !== 'undefined';
   }
 
   /**
    * If mediaDevices under navigator is supported.
    */
-  public get isMediaDevicesSuported() {
+  isMediaDevicesSuported() {
     return this.hasNavigator && !!navigator.mediaDevices;
   }
 
   /**
    * If enumerateDevices under navigator is supported.
    */
-  public get canEnumerateDevices() {
+  canEnumerateDevices() {
     return !!(this.isMediaDevicesSuported && navigator.mediaDevices.enumerateDevices);
   }
 
@@ -56,7 +56,7 @@ export class BrowserCodeReader {
   protected _timeBetweenDecodingAttempts: number = 0;
 
   /** Time between two decoding tries in milli seconds. */
-  get timeBetweenDecodingAttempts(): number {
+  timeBetweenDecodingAttempts(): number {
     return this._timeBetweenDecodingAttempts;
   }
 
@@ -65,7 +65,7 @@ export class BrowserCodeReader {
    *
    * @param {number} millis Time between two decoding tries in milli seconds.
    */
-  set timeBetweenDecodingAttempts(millis: number) {
+  settimeBetweenDecodingAttempts(millis: number) {
     this._timeBetweenDecodingAttempts = millis < 0 ? 0 : millis;
   }
 
@@ -120,14 +120,14 @@ export class BrowserCodeReader {
   /**
    * Sets the hints.
    */
-  set hints(hints: Map<DecodeHintType, any>) {
+  sethints(hints: Map<DecodeHintType, any>) {
     this._hints = hints || null;
   }
 
   /**
    * Sets the hints.
    */
-  get hints(): Map<DecodeHintType, any> {
+  hints(): Map<DecodeHintType, any> {
     return this._hints;
   }
 
