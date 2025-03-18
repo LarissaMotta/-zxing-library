@@ -64,9 +64,6 @@
     "tsc": "./node_modules/.bin/tsc",
     "tslint": "./node_modules/.bin/tslint \"./src/**/*.ts\""
   },
-  "dependencies": {
-    "ts-custom-error": "^3.0.0"
-  },
   "devDependencies": {
     "@rollup/plugin-node-resolve": "^7.1.3",
     "@types/chai": "^4.1.7",
