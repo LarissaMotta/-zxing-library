@@ -30,7 +30,7 @@ abstract class BrowserSvgCodeWriter {
      */
     public constructor(containerElement: string | HTMLElement) {
         if (typeof containerElement === 'string') {
-            this.containerElement = document.getElementById(containerElement);
+            this.containerElement = document.querySelector<HTMLElement>(containerElement);
         } else {
             this.containerElement = containerElement;
         }
@@ -118,7 +118,7 @@ abstract class BrowserSvgCodeWriter {
 
         svgElement.append(placeholder);
 
-        this.containerElement.appendChild(svgElement);
+        (this.containerElement as HTMLElement).appendChild(svgElement);
 
         // 2D loop
         for (let inputY = 0, outputY = topPadding; inputY < inputHeight; inputY++ , outputY += multiple) {

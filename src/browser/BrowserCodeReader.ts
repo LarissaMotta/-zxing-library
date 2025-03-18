@@ -438,8 +438,8 @@ export class BrowserCodeReader {
 
     try {
       await videoElement.play();
-    } catch {
-      console.warn('It was not possible to play the video.');
+    } catch (e) {
+      console.warn('It was not possible to play the video.', e);
     }
   }
 
